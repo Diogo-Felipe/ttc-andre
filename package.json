@@ -1,0 +1,31 @@
+{
+  "name": "ttc-andre",
+  "version": "1.0.0",
+  "description": "Tcc do andre",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Diogo-Felipe/ttc-andre.git"
+  },
+  "author": "Diogo L C Felipe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Diogo-Felipe/ttc-andre/issues"
+  },
+  "homepage": "https://github.com/Diogo-Felipe/ttc-andre#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "knex": "^0.95.15",
+    "knex-raw-template-strings": "^0.0.2",
+    "md5": "^2.3.0",
+    "sqlite3": "^5.0.2"
+  }
+}
