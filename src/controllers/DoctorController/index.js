@@ -1,4 +1,5 @@
 const connection = require("../../database/connection");
+const { encrypt } = require("../../utils/CryptoHandler");
 
 module.exports = {
   async index(request, response) {
@@ -9,7 +10,7 @@ module.exports = {
       .where("cpf", cpf)
       .first();
 
-    if(!doctor) {
+    if (!doctor) {
       return response.status(404).json({ error: "Doctor not found" });
     }
 
@@ -19,18 +20,16 @@ module.exports = {
   async create(request, response) {
     const { cpf, name, password } = request.body;
 
-    const doctorCheck = await connection("doctor")
-      .where("cpf", cpf)
-      .first();
+    const doctorCheck = await connection("doctor").where("cpf", cpf).first();
 
-    if(doctorCheck) {
+    if (doctorCheck) {
       return response.status(400).json({ error: "Doctor already exists" });
     }
 
     const doctor = await connection("doctor").insert({
       cpf,
       name,
-      password,
+      password: encrypt(password),
     });
 
     return response.status(201).json({ doctor });
@@ -39,9 +38,7 @@ module.exports = {
   async delete(request, response) {
     const { cpf } = request.query;
 
-    const doctor = await connection("doctor")
-      .where("cpf", cpf)
-      .delete();
+    const doctor = await connection("doctor").where("cpf", cpf).delete();
 
     return response.status(204).json(doctor);
   },
