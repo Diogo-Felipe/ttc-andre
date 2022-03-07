@@ -38,9 +38,10 @@ const isValidToken = async (tokenHash, doctorCpf) => {
   }
 
   if (token.validTimeInSeconds) {
-    const now = new Date().getTime();
+    const today = new Date();
+    const now = today.getTime() + today.getTimezoneOffset()*60*1000;
     const tokenExpiration =
-      token.createdAt.getTime() + token.validTimeInSeconds * 1000;
+      new Date(token.createdAt).getTime() + token.validTimeInSeconds * 1000;
 
     if (now > tokenExpiration) {
       return false;
