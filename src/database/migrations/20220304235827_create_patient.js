@@ -4,7 +4,7 @@ exports.up = function(knex) {
       table.string('cpf').primary();
       table.string('name').notNullable();
       table.string('responsibleName').notNullable();
-
+      table.string('gender');
       table.string('doctorCpf').notNullable();
       table.foreign('doctorCpf').references('cpf').inTable('doctor');
   })
