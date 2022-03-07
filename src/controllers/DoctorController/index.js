@@ -6,7 +6,7 @@ module.exports = {
     const { cpf } = request.query;
 
     const doctor = await connection("doctor")
-      .select("cpf", "name")
+      .select("cpf", "name", "affiliation", "email", "phone")
       .where("cpf", cpf)
       .first();
 
@@ -18,7 +18,7 @@ module.exports = {
   },
 
   async create(request, response) {
-    const { cpf, name, password } = request.body;
+    const { cpf, name, affiliation, email, phone, password } = request.body;
 
     const doctorCheck = await connection("doctor").where("cpf", cpf).first();
 
@@ -30,6 +30,9 @@ module.exports = {
       cpf,
       name,
       password: encrypt(password),
+      affiliation,
+      email,
+      phone,
     });
 
     return response.status(201).json({ doctor });
