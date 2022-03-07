@@ -5,7 +5,7 @@ const { createToken } = require("../../utils/TokenHandler");
 
 module.exports = {
   async index(request, response) {
-    const { cpf, password, sectionTime } = request.body;
+    const { cpf, password, sessionTime } = request.body;
 
     const doctor = await connection("doctor")
       .select("cpf", "name")
@@ -17,7 +17,7 @@ module.exports = {
       return response.status(404).json({ error: "Invalid credentials" });
     }
 
-    const token = await createToken(cpf, sectionTime);
+    const token = await createToken(cpf, sessionTime);
 
     if (!token) {
       return response.status(500).json({ error: "Error creating token" });
