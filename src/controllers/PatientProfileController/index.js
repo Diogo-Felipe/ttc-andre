@@ -36,4 +36,12 @@ module.exports = {
 
     return response.json(user);
   },
+
+  async delete(request, response) {
+    const { cpf } = request.query;
+
+    const patient = await connection("patient").where("cpf", cpf).delete();
+
+    return response.status(204).json(patient);
+  },
 };
