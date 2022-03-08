@@ -4,9 +4,13 @@ module.exports = {
   async verifySession(request, response, next) {
     const { doctorCpf } = request.query;
 
-    console.log(doctorCpf)
-
     const authorization = request.get("Authorization");
+
+    if (!doctorCpf) {
+      var error = new Error("Doctor cpf not provided");
+      error.status = 401;
+      return next(error);
+    }
 
     if (!authorization) {
       var error = new Error("Token not provided");
