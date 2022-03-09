@@ -34,10 +34,14 @@ module.exports = {
 
   production: {
     client: 'postgresql',
+    migrations: {
+      directory: './src/database/migrations'
+    },
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      host: 'ec2-52-44-209-165.compute-1.amazonaws.com',
+      database: 'd6vd9bco3djo9',
+      user:     'pmferwaskawylm',
+      password: '5251b1096952821d49f503b8a3c86776b7d16af22ddc09a3b9faec8dd566fd74'
     },
     pool: {
       min: 2,
