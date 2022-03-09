@@ -1,5 +1,7 @@
 const connection = require("../../database/connection");
 
+const { ErrorMessages } = require("../../utils/ErrorHandler");
+
 module.exports = {
   async index(request, response) {
     const { cpf } = request.query;
@@ -17,7 +19,9 @@ module.exports = {
       .first();
 
     if (!patient) {
-      return response.status(404).json({ error: "Patient not found" });
+      return response
+        .status(404)
+        .json({ error: ErrorMessages.patientNotFound });
     }
 
     return response.status(200).json(patient);

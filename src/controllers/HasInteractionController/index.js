@@ -1,5 +1,7 @@
 const connection = require("../../database/connection");
 
+const { ErrorMessages } = require("../../utils/ErrorHandler");
+
 module.exports = {
   async index(request, response) {
     const { cpf } = request.query;
@@ -11,7 +13,7 @@ module.exports = {
       .where("patient.cpf", cpf);
 
     if (!interaction) {
-      return response.status(404).json({ error: "User do not have this interaction" });
+      return response.status(404).json({ error: ErrorMessages.userDontHaveInteraction });
     }
 
     return response.status(200).json(interaction);
@@ -27,7 +29,7 @@ module.exports = {
       .first();
 
     if (interaction) {
-      return response.status(400).json({ error: "User already has this interaction" });
+      return response.status(400).json({ error: ErrorMessages.userHaveInteraction });
     }
 
     await connection("hasInteraction").insert({

@@ -1,5 +1,6 @@
 const connection = require("../../database/connection");
 const { encrypt } = require("../../utils/CryptoHandler");
+const { ErrorMessages } = require("../../utils/ErrorHandler");
 
 module.exports = {
   async index(request, response) {
@@ -23,7 +24,9 @@ module.exports = {
     const doctorCheck = await connection("doctor").where("cpf", cpf).first();
 
     if (doctorCheck) {
-      return response.status(400).json({ error: "Doctor already exists" });
+      return response
+        .status(400)
+        .json({ error: ErrorMessages.doctorAlreadyExist });
     }
 
     const doctor = await connection("doctor").insert({

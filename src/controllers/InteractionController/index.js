@@ -1,5 +1,7 @@
 const connection = require("../../database/connection");
 
+const { ErrorMessages } = require("../../utils/ErrorHandler");
+
 module.exports = {
   async index(request, response) {
     const { id } = request.query;
@@ -9,8 +11,10 @@ module.exports = {
       .where("id", id)
       .first();
 
-    if(!interaction) {
-      return response.status(404).json({ error: "Interaction not found" });
+    if (!interaction) {
+      return response
+        .status(404)
+        .json({ error: ErrorMessages.interactionNotFound });
     }
 
     return response.status(200).json(interaction);
