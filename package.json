@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "Tcc do andre",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js",
+    "start-dev": "nodemon src/index.js",
+    "start": "node src/index.js",
     "build": "npx knex migrate:latest"
   },
   "repository": {
@@ -28,6 +32,7 @@
     "knex": "^0.95.15",
     "knex-raw-template-strings": "^0.0.2",
     "md5": "^2.3.0",
+    "pg": "^8.7.3",
     "sqlite3": "^5.0.2"
   }
 }
