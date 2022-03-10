@@ -21,8 +21,8 @@ routes.post("/doctor", DoctorController.create);
 routes.delete("/doctor", DoctorController.delete);
 
 routes.get("/patient", PatientProfileController.index);
-routes.post("'/auth/patient", PatientProfileController.create);
-routes.delete("'/auth/patient", PatientProfileController.delete);
+routes.post("/auth/patient", PatientProfileController.create);
+routes.delete("/auth/patient", PatientProfileController.delete);
 
 routes.get("/interaction", InteractionController.index);
 routes.post("/auth/interaction", InteractionController.create);
