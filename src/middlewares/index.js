@@ -1,5 +1,5 @@
-const { isValidToken } = require("../../utils/TokenHandler");
-const { ErrorMessages } = require("../../utils/ErrorHandler");
+const { tokenModel } = require("../Models");
+const { ErrorMessages } = require("../utils");
 
 module.exports = {
   async verifySession(request, response, next) {
@@ -17,7 +17,7 @@ module.exports = {
       return;
     }
 
-    const tokenValid = await isValidToken(authorization, doctorCpf);
+    const tokenValid = await tokenModel.isValidToken(authorization, doctorCpf);
 
     if (!tokenValid) {
       response.status(401).json({ error: ErrorMessages.invalidToken });

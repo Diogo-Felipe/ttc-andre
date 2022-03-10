@@ -1,15 +1,12 @@
-const connection = require("../../database/connection");
+const { interactionModel } = require("../../Models");
 
-const { ErrorMessages } = require("../../utils/ErrorHandler");
+const { ErrorMessages } = require("../../utils");
 
 module.exports = {
   async index(request, response) {
     const { id } = request.query;
 
-    const interaction = await connection("interaction")
-      .select("id", "name", "description")
-      .where("id", id)
-      .first();
+    const interaction = await interactionModel.getInteractionById(id);
 
     if (!interaction) {
       return response
@@ -23,10 +20,7 @@ module.exports = {
   async create(request, response) {
     const { name, description } = request.body;
 
-    await connection("interaction").insert({
-      name,
-      description,
-    });
+    await interactionModel.createInteraction(name, description);
 
     return response.status(201).json({ name, description });
   },
@@ -34,9 +28,7 @@ module.exports = {
   async delete(request, response) {
     const { id } = request.query;
 
-    const interaction = await connection("interaction")
-      .where("id", id)
-      .delete();
+    const interaction = await interactionModel.deleteInteractionById(id);
 
     return response.status(204).json(interaction);
   },

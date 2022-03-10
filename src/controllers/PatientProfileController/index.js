@@ -1,22 +1,12 @@
-const connection = require("../../database/connection");
+const { patientModel } = require("../../Models");
 
-const { ErrorMessages } = require("../../utils/ErrorHandler");
+const { ErrorMessages } = require("../../utils");
 
 module.exports = {
   async index(request, response) {
     const { cpf } = request.query;
 
-    const patient = await connection("patient")
-      .select(
-        "patient.cpf",
-        "patient.name",
-        "patient.responsibleName",
-        "patient.gender",
-        "doctor.name as doctorName"
-      )
-      .join("doctor", "patient.doctorCpf", "=", "doctor.cpf")
-      .where("patient.cpf", cpf)
-      .first();
+    const patient = await patientModel.getPatientByCpf(cpf);
 
     if (!patient) {
       return response
@@ -30,13 +20,13 @@ module.exports = {
   async create(request, response) {
     const { cpf, name, responsibleName, doctorCpf, gender } = request.body;
 
-    const user = await connection("patient").insert({
+    const user = await patientModel.createPatient(
       cpf,
       name,
       responsibleName,
       doctorCpf,
-      gender,
-    });
+      gender
+    );
 
     return response.json(user);
   },
@@ -44,7 +34,7 @@ module.exports = {
   async delete(request, response) {
     const { cpf } = request.query;
 
-    const patient = await connection("patient").where("cpf", cpf).delete();
+    const patient = await patientModel.deletePatientByCpf(cpf);
 
     return response.status(204).json(patient);
   },

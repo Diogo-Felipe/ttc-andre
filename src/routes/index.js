@@ -10,29 +10,27 @@ const {
   AllInteractionsController,
 } = require("../controllers");
 
-const { verifySession } = require("./middlewares");
-
 const routes = express.Router();
 
 routes.post("/doctorLogin", DoctorLoginController.index);
 
-routes.get("/patients", verifySession, PatientController.index);
+routes.get("/auth/patients", PatientController.index);
 
 routes.get("/doctor", DoctorController.index);
 routes.post("/doctor", DoctorController.create);
 routes.delete("/doctor", DoctorController.delete);
 
 routes.get("/patient", PatientProfileController.index);
-routes.post("/patient", verifySession, PatientProfileController.create);
-routes.delete("/patient", verifySession, PatientProfileController.delete);
+routes.post("'/auth/patient", PatientProfileController.create);
+routes.delete("'/auth/patient", PatientProfileController.delete);
 
 routes.get("/interaction", InteractionController.index);
-routes.post("/interaction", verifySession, InteractionController.create);
-routes.delete("/interaction", verifySession, InteractionController.delete);
+routes.post("'/auth/interaction", InteractionController.create);
+routes.delete("'/auth/interaction", InteractionController.delete);
 
 routes.get("/hasInteraction", HasInteractionController.index);
-routes.post("/hasInteraction", verifySession, HasInteractionController.create);
-routes.delete("/hasInteraction", verifySession, HasInteractionController.delete);
+routes.post("'/auth/hasInteraction", HasInteractionController.create);
+routes.delete("'/auth/hasInteraction", HasInteractionController.delete);
 
 routes.get("/allInteractions", AllInteractionsController.index);
 

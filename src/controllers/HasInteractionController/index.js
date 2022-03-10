@@ -1,16 +1,12 @@
-const connection = require("../../database/connection");
+const { hasInteractionModel } = require("../../Models");
 
-const { ErrorMessages } = require("../../utils/ErrorHandler");
+const { ErrorMessages } = require("../../utils");
 
 module.exports = {
   async index(request, response) {
     const { cpf } = request.query;
 
-    const interaction = await connection("hasInteraction")
-      .select("patient.name", "interaction.name", "interaction.description")
-      .join("patient", "patient.cpf", "=", "hasInteraction.cpf")
-      .join("interaction", "interaction.id", "=", "hasInteraction.id")
-      .where("patient.cpf", cpf);
+    const interaction = await hasInteractionModel.getAllUserInteractionByUserCpf(cpf);
 
     if (!interaction) {
       return response.status(404).json({ error: ErrorMessages.userDontHaveInteraction });
@@ -22,20 +18,13 @@ module.exports = {
   async create(request, response) {
     const { cpf, id } = request.body;
 
-    const interaction = await connection("hasInteraction")
-      .select("*")
-      .where("cpf", cpf)
-      .andWhere("id", id)
-      .first();
+    const interaction = await hasInteractionModel.getUserInteractionByCpfAndId(cpf, id);
 
     if (interaction) {
       return response.status(400).json({ error: ErrorMessages.userHaveInteraction });
     }
 
-    await connection("hasInteraction").insert({
-      cpf,
-      id,
-    });
+    await hasInteractionModel.createUserInteraction(cpf, id);
 
     return response.status(201).json({ cpf, id });
   },
@@ -43,10 +32,7 @@ module.exports = {
   async delete(request, response) {
     const { cpf, id } = request.query;
 
-    const interaction = await connection("hasInteraction")
-      .where("cpf", cpf)
-      .where("id", id)
-      .delete();
+    const interaction = await hasInteractionModel.deleteUserInteraction(cpf, id);
 
     return response.status(204).json(interaction);
   },

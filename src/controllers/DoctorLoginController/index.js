@@ -1,18 +1,12 @@
-const connection = require("../../database/connection");
+const { authModel, tokenModel } = require("../../Models");
 
-const { encrypt } = require("../../utils/CryptoHandler");
-const { createToken } = require("../../utils/TokenHandler");
-const { ErrorMessages } = require("../../utils/ErrorHandler");
+const { ErrorMessages } = require("../../utils");
 
 module.exports = {
   async index(request, response) {
     const { cpf, password, sessionTime } = request.body;
 
-    const doctor = await connection("doctor")
-      .select("cpf", "name")
-      .where("cpf", cpf)
-      .andWhere("password", encrypt(password))
-      .first();
+    const doctor = await authModel.login(cpf, password);
 
     if (!doctor) {
       return response
@@ -20,7 +14,7 @@ module.exports = {
         .json({ error: ErrorMessages.invalidCredentials });
     }
 
-    const token = await createToken(cpf, sessionTime);
+    const token = await tokenModel.createToken(cpf, sessionTime);
 
     if (!token) {
       return response

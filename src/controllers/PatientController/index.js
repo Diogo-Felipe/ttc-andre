@@ -1,18 +1,12 @@
-const connection = require("../../database/connection");
+const { patientModel } = require("../../Models");
 
 module.exports = {
   async index(request, response) {
     const { doctorCpf } = request.query;
 
-    const patient = await connection("patient")
-      .select(
-        "patient.cpf",
-        "patient.name",
-        "patient.responsibleName",
-        "patient.gender"
-      )
-      .join("doctor", "patient.doctorCpf", "=", "doctor.cpf")
-      .where("patient.doctorCpf", doctorCpf);
+    const patient = await patientModel.getAllDoctorPatientsByDoctorCpf(
+      doctorCpf
+    );
 
     return response.status(200).json(patient);
   },
