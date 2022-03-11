@@ -16,17 +16,17 @@ module.exports = {
   },
 
   async create(request, response) {
-    const { cpf, id } = request.body;
+    const { cpf, interactionsList } = request.body;
 
-    const interaction = await hasInteractionModel.getUserInteractionByCpfAndId(cpf, id);
+    const interactions = await hasInteractionModel.getUserInteractionByCpfAndIdList(cpf, interactionsList);
 
-    if (interaction) {
-      return response.status(400).json({ error: ErrorMessages.userHaveInteraction });
+    if (!interactions) {
+      return response.status(400).json({ error: ErrorMessages.userHaveAllInteractions });
     }
 
-    await hasInteractionModel.createUserInteraction(cpf, id);
+    await hasInteractionModel.createUserInteraction(cpf, interactions);
 
-    return response.status(201).json({ cpf, id });
+    return response.status(201).json({ cpf, interactions });
   },
 
   async delete(request, response) {

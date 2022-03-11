@@ -18,14 +18,15 @@ module.exports = {
   },
 
   async create(request, response) {
-    const { cpf, name, responsibleName, doctorCpf, gender } = request.body;
+    const { cpf, name, responsibleName, doctorCpf, gender, interactionsList } = request.body;
 
     const user = await patientModel.createPatient(
       cpf,
       name,
       responsibleName,
       doctorCpf,
-      gender
+      gender,
+      interactionsList,
     );
 
     return response.json(user);

@@ -1,6 +1,9 @@
+const knex = require("knex");
+
 class Patient {
-  constructor(connection) {
+  constructor(connection, hasInteractionModel) {
     this.connection = connection;
+    this.hasInteractionModel = hasInteractionModel;
   }
 
   async getPatientByCpf(cpf) {
@@ -17,14 +20,25 @@ class Patient {
       .first();
   }
 
-  async createPatient(cpf, name, responsibleName, doctorCpf, gender) {
-    return await this.connection("patient").insert({
-      cpf,
-      name,
-      responsibleName,
-      doctorCpf,
-      gender,
-    });
+  async createPatient(
+    cpf,
+    name,
+    responsibleName,
+    doctorCpf,
+    gender,
+    interactionsList
+  ) {
+    return await this.connection("patient")
+      .insert({
+        cpf,
+        name,
+        responsibleName,
+        doctorCpf,
+        gender,
+      })
+      .then(async (response) => {
+        return this.hasInteractionModel.createUserInteraction(cpf, interactionsList)
+      });
   }
 
   async deletePatientByCpf(cpf) {
@@ -33,14 +47,14 @@ class Patient {
 
   async getAllDoctorPatientsByDoctorCpf(doctorCpf) {
     return await this.connection("patient")
-    .select(
-      "patient.cpf",
-      "patient.name",
-      "patient.responsibleName",
-      "patient.gender"
-    )
-    .join("doctor", "patient.doctorCpf", "=", "doctor.cpf")
-    .where("patient.doctorCpf", doctorCpf);
+      .select(
+        "patient.cpf",
+        "patient.name",
+        "patient.responsibleName",
+        "patient.gender"
+      )
+      .join("doctor", "patient.doctorCpf", "=", "doctor.cpf")
+      .where("patient.doctorCpf", doctorCpf);
   }
 }
 

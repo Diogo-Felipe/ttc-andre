@@ -11,7 +11,7 @@ const authModel = new Auth(connection);
 const doctorModel = new Doctor(connection);
 const hasInteractionModel = new HasInteraction(connection);
 const interactionModel = new Interaction(connection);
-const patientModel = new Patient(connection);
+const patientModel = new Patient(connection, hasInteractionModel);
 const tokenModel = new Token(connection);
 
 module.exports = {
