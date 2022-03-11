@@ -12,6 +12,8 @@ const ErrorMessages = {
   tokenNotProvided: "Token not provided",
   invalidToken: "Invalid token",
   cpfRequired: "CPF required",
+  admPassNotProvided: "Adm pass not provided",
+  emailNotProvided: "Email not provided",
 };
 
 module.exports = { ErrorMessages };

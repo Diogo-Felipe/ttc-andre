@@ -1,29 +1,7 @@
-const { tokenModel } = require("../Models");
-const { ErrorMessages } = require("../utils");
+const { verifyAdmSession } = require("./verifyAdmSession")
+const { verifyDoctorSession } = require("./verifyDoctorSession")
 
 module.exports = {
-  async verifySession(request, response, next) {
-    const { doctorCpf } = request.query;
-
-    const authorization = request.get("Authorization");
-
-    if (!doctorCpf) {
-      response.status(401).json({ error: ErrorMessages.doctorCpfNotProvided });
-      return;
-    }
-
-    if (!authorization) {
-      response.status(401).json({ error: ErrorMessages.tokenNotProvided });
-      return;
-    }
-
-    const tokenValid = await tokenModel.isValidToken(authorization, doctorCpf);
-
-    if (!tokenValid) {
-      response.status(401).json({ error: ErrorMessages.invalidToken });
-      return;
-    }
-
-    next();
-  },
-};
+  verifyAdmSession,
+  verifyDoctorSession
+}
