@@ -1,9 +1,8 @@
-const { encrypt } = require("../../utils");
-
 class Doctor {
 
-  constructor(connection){
+  constructor(connection, cryptoHandler){
     this.connection = connection
+    this.cryptoHandler = cryptoHandler;
   }
 
   async getADoctorByCpf(cpf){
@@ -14,10 +13,12 @@ class Doctor {
   }
 
   async createDoctor(cpf, name, affiliation, email, phone, password){
+
+    //TODO: Validate Information
     return await this.connection("doctor").insert({
       cpf,
       name,
-      password: encrypt(password),
+      password: this.cryptoHandler.encrypt(password),
       affiliation,
       email,
       phone,

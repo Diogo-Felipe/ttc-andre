@@ -1,14 +1,13 @@
-const { encrypt } = require("../../utils");
-
 const VALID_TIME_IN_SECONDS = 1800;
 
 class TokenModel {
-  constructor(connection) {
+  constructor(connection, cryptoHandler) {
     this.connection = connection;
+    this.cryptoHandler = cryptoHandler;
   }
 
   async createToken(doctorCpf, validTimeInSeconds = VALID_TIME_IN_SECONDS) {
-    const tokenHash = encrypt(new Date().getTime());
+    const tokenHash = this.cryptoHandler.encrypt(new Date().getTime());
     const token = await this.connection("token").insert({
       tokenHash,
       doctorCpf,

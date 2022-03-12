@@ -1,7 +1,7 @@
 const ErrorMessages = require("./ErrorHandler").ErrorMessages;
-const encrypt = require("./CryptoHandler").encrypt;
+const CryptoHandler = require("./CryptoHandler");
 
 module.exports = {
   ErrorMessages,
-  encrypt,
+  CryptoHandler,
 }

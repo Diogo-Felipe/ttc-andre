@@ -1,15 +1,14 @@
-const { encrypt } = require("../../utils");
-
 class Auth {
-  constructor(connection) {
+  constructor(connection, cryptoHandler) {
     this.connection = connection;
+    this.cryptoHandler = cryptoHandler;
   }
 
   async login(cpf, password) {
     return await this.connection("doctor")
       .select("cpf", "name")
       .where("cpf", cpf)
-      .andWhere("password", encrypt(password))
+      .andWhere("password", this.cryptoHandler.encrypt(password))
       .first();
   }
 }

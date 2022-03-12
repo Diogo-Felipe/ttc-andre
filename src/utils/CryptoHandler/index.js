@@ -1,9 +1,8 @@
 const md5 = require("md5");
+class CryptoHandler {
+  encrypt = (value) => {
+    return md5(value);
+  };
+}
 
-const encrypt = (value) => {
-  return md5(value);
-};
-
-module.exports = {
-  encrypt,
-};
+module.exports = CryptoHandler;
