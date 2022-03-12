@@ -1,29 +1,44 @@
-const { tokenModel } = require("../../Models");
-const { ErrorMessages } = require("../../utils");
+class DoctorSession {
+  constructor(tokenModel, errorhandler) {
+    this.tokenModel = tokenModel;
+    this.errorhandler = errorhandler;
+  }
 
-module.exports = {
-  async verifyDoctorSession(request, response, next) {
+  async verify(request, response, next) {
     const { doctorCpf } = request.query;
 
     const authorization = request.get("Authorization");
 
     if (!doctorCpf) {
-      response.status(401).json({ error: ErrorMessages.doctorCpfNotProvided });
+      response
+        .status(401)
+        .json({
+          error: this.errorhandler.getErrorMessage("doctorCpfNotProvided"),
+        });
       return;
     }
 
     if (!authorization) {
-      response.status(401).json({ error: ErrorMessages.tokenNotProvided });
+      response
+        .status(401)
+        .json({ error: this.errorhandler.getErrorMessage("tokenNotProvided") });
       return;
     }
 
-    const tokenValid = await tokenModel.isValidToken(authorization, doctorCpf);
+    const tokenValid = await this.tokenModel.isValidToken(
+      authorization,
+      doctorCpf
+    );
 
     if (!tokenValid) {
-      response.status(401).json({ error: ErrorMessages.invalidToken });
+      response
+        .status(401)
+        .json({ error: this.errorhandler.getErrorMessage("invalidToken") });
       return;
     }
 
     next();
-  },
-};
+  }
+}
+
+module.exports = DoctorSession;
