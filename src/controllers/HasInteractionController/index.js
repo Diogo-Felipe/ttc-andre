@@ -1,8 +1,7 @@
-
-const { ErrorMessages } = require("../../utils");
 class hasInteractionController {
-  constructor(hasInteractionModel) {
+  constructor(hasInteractionModel, errorhandler) {
     this.hasInteractionModel = hasInteractionModel;
+    this.errorhandler = errorhandler;
   }
 
   async index(request, response) {
@@ -11,10 +10,12 @@ class hasInteractionController {
     const interaction =
       await this.hasInteractionModel.getAllUserInteractionByUserCpf(cpf);
 
-    if (!interaction) {
+    if (interaction.length === 0) {
       return response
         .status(404)
-        .json({ error: ErrorMessages.userDontHaveInteraction });
+        .json({
+          error: this.errorhandler.getErrorMessage("userDontHaveInteraction"),
+        });
     }
 
     return response.status(200).json(interaction);
@@ -32,7 +33,9 @@ class hasInteractionController {
     if (!interactions) {
       return response
         .status(400)
-        .json({ error: ErrorMessages.userHaveAllInteractions });
+        .json({
+          error: this.errorhandler.getErrorMessage("userHaveAllInteractions"),
+        });
     }
 
     await this.hasInteractionModel.createUserInteraction(cpf, interactions);

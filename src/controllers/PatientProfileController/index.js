@@ -1,8 +1,7 @@
-const { ErrorMessages } = require("../../utils");
-
 class PatientProfileController {
-  constructor(patientModel) {
+  constructor(patientModel, errorhandler) {
     this.patientModel = patientModel;
+    this.errorhandler = errorhandler;
   }
 
   async index(request, response) {
@@ -13,7 +12,7 @@ class PatientProfileController {
     if (!patient) {
       return response
         .status(404)
-        .json({ error: ErrorMessages.patientNotFound });
+        .json({ error: this.errorhandler.getErrorMessage("patientNotFound") });
     }
 
     return response.status(200).json(patient);

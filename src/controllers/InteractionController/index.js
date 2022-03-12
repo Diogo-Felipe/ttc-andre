@@ -1,7 +1,7 @@
-const { ErrorMessages } = require("../../utils");
 class InteractionController {
-  constructor(interactionModel) {
+  constructor(interactionModel, errorhandler) {
     this.interactionModel = interactionModel;
+    this.errorhandler = errorhandler;
   }
 
   async index(request, response) {
@@ -12,7 +12,7 @@ class InteractionController {
     if (!interaction) {
       return response
         .status(404)
-        .json({ error: ErrorMessages.interactionNotFound });
+        .json({ error: this.errorhandler.getErrorMessage("interactionNotFound") });
     }
 
     return response.status(200).json(interaction);

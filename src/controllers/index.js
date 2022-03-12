@@ -7,6 +7,8 @@ const {
   patientModel
 } = require("../Models");
 
+const { Errorhandler } = require("../utils");
+
 const PatientProfileController = require("./PatientProfileController");
 const PatientController = require("./PatientController");
 const DoctorController = require("./DoctorController");
@@ -15,17 +17,19 @@ const InteractionController = require("./InteractionController");
 const HasInteractionController = require("./HasInteractionController");
 const AllInteractionsController = require("./AllInteractionsController");
 
+const errorhandler = new Errorhandler();
+
 const allInteractionsController = new AllInteractionsController(
   interactionModel
 );
 const hasInteractionController = new HasInteractionController(
-  hasInteractionModel
+  hasInteractionModel, errorhandler
 );
-const doctorLoginController = new DoctorLoginController(authModel, tokenModel);
-const doctorController = new DoctorController(doctorModel);
-const interactionController = new InteractionController(interactionModel);
+const doctorLoginController = new DoctorLoginController(authModel, tokenModel, errorhandler);
+const doctorController = new DoctorController(doctorModel, errorhandler);
+const interactionController = new InteractionController(interactionModel, errorhandler);
 const patientController = new PatientController(patientModel);
-const patientProfileController = new PatientProfileController(patientModel);
+const patientProfileController = new PatientProfileController(patientModel, errorhandler);
 
 module.exports = {
   patientProfileController,

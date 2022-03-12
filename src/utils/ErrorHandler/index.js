@@ -23,4 +23,4 @@ class Errorhandler {
 
 
 
-module.exports = { ErrorMessages };
+module.exports = Errorhandler

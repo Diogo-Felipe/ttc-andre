@@ -1,21 +1,24 @@
-const { ErrorMessages } = require("../../utils");
 class DoctorController {
-
-  constructor(doctorModel) {
+  constructor(doctorModel, errorhandler) {
     this.doctorModel = doctorModel;
+    this.errorhandler = errorhandler;
   }
 
   async index(request, response) {
     const { cpf } = request.query;
 
     if (!cpf) {
-      return response.status(400).json({ error: ErrorMessages.cpfRequired });
+      return response
+        .status(400)
+        .json({ error: this.errorhandler.getErrorMessage("cpfRequired") });
     }
 
     const doctor = await this.doctorModel.getADoctorByCpf(cpf);
 
     if (!doctor) {
-      return response.status(404).json({ error: ErrorMessages.doctorNotFound });
+      return response
+        .status(404)
+        .json({ error: this.errorhandler.getErrorMessage("doctorNotFound") });
     }
 
     return response.status(200).json(doctor);
@@ -29,7 +32,9 @@ class DoctorController {
     if (doctorCheck) {
       return response
         .status(400)
-        .json({ error: ErrorMessages.doctorAlreadyExist });
+        .json({
+          error: this.errorhandler.getErrorMessage("doctorAlreadyExist"),
+        });
     }
 
     const doctor = await this.doctorModel.createDoctor(
@@ -53,6 +58,6 @@ class DoctorController {
   }
 }
 
-module.exports = DoctorController;{
-
-};
+module.exports = DoctorController;
+{
+}

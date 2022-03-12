@@ -1,9 +1,8 @@
-const { ErrorMessages } = require("../../utils");
-
 class DoctorLoginController {
-  constructor(authModel, tokenModel) {
+  constructor(authModel, tokenModel, errorhandler) {
     this.authModel = authModel;
     this.tokenModel = tokenModel;
+    this.errorhandler = errorhandler;
   }
 
   async index(request, response) {
@@ -14,7 +13,9 @@ class DoctorLoginController {
     if (!doctor) {
       return response
         .status(404)
-        .json({ error: ErrorMessages.invalidCredentials });
+        .json({
+          error: this.errorhandler.getErrorMessage("invalidCredentials"),
+        });
     }
 
     const token = await this.tokenModel.createToken(cpf, sessionTime);
@@ -22,7 +23,7 @@ class DoctorLoginController {
     if (!token) {
       return response
         .status(500)
-        .json({ error: ErrorMessages.createTokenError });
+        .json({ error: this.errorhandler.getErrorMessage("createTokenError") });
     }
 
     return response.status(200).json({ doctor, token });
