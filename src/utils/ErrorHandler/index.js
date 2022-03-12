@@ -15,5 +15,12 @@ const ErrorMessages = {
   admPassNotProvided: "Adm pass not provided",
   emailNotProvided: "Email not provided",
 };
+class Errorhandler {
+  getErrorMessage(error){
+    return ErrorMessages[error];
+  }
+}
+
+
 
 module.exports = { ErrorMessages };

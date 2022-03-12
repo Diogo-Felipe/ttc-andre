@@ -1,9 +1,14 @@
-const { interactionModel } = require("../../Models");
+class AllInteractionsController {
 
-module.exports = {
+  constructor(interactionModel) {
+    this.interactionModel = interactionModel;
+  }
+
   async index(request, response) {
-    const interactions = await interactionModel.getAllInteractions();
+    const interactions = await this.interactionModel.getAllInteractions();
 
     return response.status(200).json(interactions);
-  },
-};
+  }
+}
+
+module.exports = AllInteractionsController;

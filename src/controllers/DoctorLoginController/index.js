@@ -1,12 +1,15 @@
-const { authModel, tokenModel } = require("../../Models");
-
 const { ErrorMessages } = require("../../utils");
 
-module.exports = {
+class DoctorLoginController {
+  constructor(authModel, tokenModel) {
+    this.authModel = authModel;
+    this.tokenModel = tokenModel;
+  }
+
   async index(request, response) {
     const { cpf, password, sessionTime } = request.body;
 
-    const doctor = await authModel.login(cpf, password);
+    const doctor = await this.authModel.login(cpf, password);
 
     if (!doctor) {
       return response
@@ -14,7 +17,7 @@ module.exports = {
         .json({ error: ErrorMessages.invalidCredentials });
     }
 
-    const token = await tokenModel.createToken(cpf, sessionTime);
+    const token = await this.tokenModel.createToken(cpf, sessionTime);
 
     if (!token) {
       return response
@@ -23,5 +26,7 @@ module.exports = {
     }
 
     return response.status(200).json({ doctor, token });
-  },
-};
+  }
+}
+
+module.exports = DoctorLoginController;

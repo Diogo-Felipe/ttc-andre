@@ -1,17 +1,38 @@
-const PatientProfileController = require("../controllers/PatientProfileController");
-const PatientController = require("../controllers/PatientController");
-const DoctorController = require("../controllers/DoctorController");
-const DoctorLoginController = require("../controllers/DoctorLoginController");
-const InteractionController = require("../controllers/InteractionController");
-const HasInteractionController = require("../controllers/HasInteractionController");
-const AllInteractionsController = require("../controllers/AllInteractionsController");
+const {
+  interactionModel,
+  doctorModel,
+  authModel,
+  tokenModel,
+  hasInteractionModel,
+  patientModel
+} = require("../Models");
+
+const PatientProfileController = require("./PatientProfileController");
+const PatientController = require("./PatientController");
+const DoctorController = require("./DoctorController");
+const DoctorLoginController = require("./DoctorLoginController");
+const InteractionController = require("./InteractionController");
+const HasInteractionController = require("./HasInteractionController");
+const AllInteractionsController = require("./AllInteractionsController");
+
+const allInteractionsController = new AllInteractionsController(
+  interactionModel
+);
+const hasInteractionController = new HasInteractionController(
+  hasInteractionModel
+);
+const doctorLoginController = new DoctorLoginController(authModel, tokenModel);
+const doctorController = new DoctorController(doctorModel);
+const interactionController = new InteractionController(interactionModel);
+const patientController = new PatientController(patientModel);
+const patientProfileController = new PatientProfileController(patientModel);
 
 module.exports = {
-  PatientProfileController,
-  PatientController,
-  DoctorController,
-  DoctorLoginController,
-  InteractionController,
-  HasInteractionController,
-  AllInteractionsController
+  patientProfileController,
+  patientController,
+  doctorController,
+  doctorLoginController,
+  interactionController,
+  hasInteractionController,
+  allInteractionsController,
 };

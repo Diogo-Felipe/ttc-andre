@@ -1,12 +1,14 @@
-const { patientModel } = require("../../Models");
-
 const { ErrorMessages } = require("../../utils");
 
-module.exports = {
+class PatientProfileController {
+  constructor(patientModel) {
+    this.patientModel = patientModel;
+  }
+
   async index(request, response) {
     const { cpf } = request.query;
 
-    const patient = await patientModel.getPatientByCpf(cpf);
+    const patient = await this.patientModel.getPatientByCpf(cpf);
 
     if (!patient) {
       return response
@@ -15,28 +17,31 @@ module.exports = {
     }
 
     return response.status(200).json(patient);
-  },
+  }
 
   async create(request, response) {
-    const { cpf, name, responsibleName, doctorCpf, gender, interactionsList } = request.body;
+    const { cpf, name, responsibleName, doctorCpf, gender, interactionsList } =
+      request.body;
 
-    const user = await patientModel.createPatient(
+    const user = await this.patientModel.createPatient(
       cpf,
       name,
       responsibleName,
       doctorCpf,
       gender,
-      interactionsList,
+      interactionsList
     );
 
     return response.json(user);
-  },
+  }
 
   async delete(request, response) {
     const { cpf } = request.query;
 
-    const patient = await patientModel.deletePatientByCpf(cpf);
+    const patient = await this.patientModel.deletePatientByCpf(cpf);
 
     return response.status(204).json(patient);
-  },
-};
+  }
+}
+
+module.exports = PatientProfileController;

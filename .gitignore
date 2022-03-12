@@ -1,1 +1,3 @@
 /node_modules
+dependencygraph.svg
+src/database/db.sqlite
